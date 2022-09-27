@@ -1,0 +1,109 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_left_sidebar">
+                    {% if not petitions%}
+                    <h1>No results found ...</h1>
+                    {% endif %}
+                    {% for petition in petitions %}
+                    <article class="blog_item">
+                        <div class="blog_item_img">
+                            <img class="card-img rounded-0" src="{{ petition.get_image }}" alt="">
+
+                            <div class="progress" style="margin-top: 1cm;">
+                                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
+                                    style="width: {{ petition.get_percentage }}%" aria-valuenow="75" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
+                            </div>
+                            <p><b style="color: black;">{{ petition.signers.count }} signed</b> of {{ petition.goal }}
+                                goal</p>
+
+                        </div>
+
+                        <div class="blog_details">
+                            <a class="d-inline-block" href="{% url 'petition-detail' petition.pk %}">
+                                <h2>{{ petition.title }}</h2>
+                            </a>
+                            <p>{{ petition.description | truncatewords:20 }}</p>
+                        </div>
+                    </article>
+                    {% endfor %}
+
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        {% if page_obj.has_other_pages %}
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"
+                                    class="page-link"><i class="ti-angle-left"></i></a></li>
+                            {% else %}
+                                <li class="page-item"><a disabled class="page-link"><i class="ti-angle-left"></i></a></li>
+                            {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active"><a class="page-link" disabled>{{ i }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"><i
+                                        class="ti-angle-right"></i></a></li>
+                            {% else %}
+                                <li class="page-item"><a disabled class="page-link"><i class="ti-angle-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <form method="get">
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder='Search Keyword'
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'"
+                                        name="q" value="{{ query }}">
+                                    <div class="input-group-append">
+                                        <button class="btn" type="button"><i class="ti-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                type="submit">Search</button>
+                        </form>
+                    </aside>
+
+                    <aside class="single_sidebar_widget post_category_widget">
+                        <h4 class="widget_title">Category</h4>
+                        <ul class="list cat-list">
+                            {% for category in categories %}
+                            <li>
+                                <a href="{% url 'petition-list'%}?q={{ query }}&category={{ category.pk }}"
+                                    class="d-flex">
+                                    <p>{{ category.title }}</p>
+                                </a>
+                            </li>
+                            {% endfor %}
+                            {% for category in categories_ %}
+                            <li>
+                                <a class="d-flex disabled">
+                                    <p>{{ category.title }}</p>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </aside>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

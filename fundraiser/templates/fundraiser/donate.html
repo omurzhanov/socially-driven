@@ -1,0 +1,81 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div data-scroll-index='1' class="make_donation_area section_padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb-55">
+                    <h3><span>Make a Donation</span></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <form method="POST" class="donation_form">
+                    {% csrf_token %}
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            {% if show %}
+                            <p style="color: rgb(196, 13, 13);">Amount can not be less than 1$</p>
+                            {% endif %}
+                            <div class="single_amount" id="other_z">
+                                <div class="input_field">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon1">$</span>
+                                        </div>
+                                        <input id="amount_" type="number" class="form-control" placeholder="40,200" aria-label="Username" aria-describedby="basic-addon1" name="other" required>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="single_amount">
+                               <div class="fixed_donat d-flex align-items-center justify-content-between">
+                                   <div class="select_prise">
+                                       <h4>Select Amount:</h4>
+                                   </div>
+                                    <div class="single_doonate"> 
+                                        <input type="radio" id="blns_1" name="radio-group" value="10" checked onclick="display_other()">
+                                        <label for="blns_1">10</label>
+                                    </div>
+                                    <div class="single_doonate"> 
+                                        <input type="radio" id="blns_2" name="radio-group" value="30" checked onclick="display_other()">
+                                        <label for="blns_2">30</label>
+                                    </div>
+                                    <div class="single_doonate"> 
+                                        <input type="radio" id="Other" name="radio-group" checked onclick="display_other()">
+                                        <label for="Other">Other</label>
+                                    </div>
+                                    <script>
+                                        function display_other(){
+                                            var x = document.getElementById("Other");
+                                            var other = document.getElementById("other_z")
+                                            var other_i = document.getElementById('amount_')
+                                            if(x.checked) {
+                                                other.style.display = "block";
+                                                other_i.required = true;
+                                            } else {
+                                                other.style.display = "none";
+                                                other_i.required = false;
+                                            }
+                                        }
+                                    </script>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="donate_now_btn text-center">
+                        <input type="submit" class="boxed-btn4" value="Donate Now">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

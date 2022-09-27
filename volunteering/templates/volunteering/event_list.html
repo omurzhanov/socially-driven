@@ -1,0 +1,115 @@
+{% extends 'fundraiser/base.html'%}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/event-list.css' %}">
+<link rel="stylesheet" href="{% static 'css/post-list.css' %}">
+{% endblock %}
+{% block content %}
+        <div class="reson_area section_padding">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="section_title text-center mb-55">
+                            <h3><span>Volunteering opportunities</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center" style="margin-bottom: 1cm;">
+                    <div class="bradcam_text text-center">
+                        <form class="form-inline" method="get">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" value="{{ query }}"
+                                aria-label="Search" name="q">
+                            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row justify-content-center" style="margin-bottom: 0.5cm;">
+                    <div class="optionbox">
+                        <form method="get">
+                            <input type="text" value="{{ query }}" hidden name="q">
+                            <select name="cause" id="city">
+                                <option value="0">Cause areas</option>
+                                {% for cause in causes %}
+                                <option value="{{ cause.pk }}" {% if cause.pk == cause_selected %} selected {%endif%}>{{ cause }}</option>
+                                {% endfor %}
+                            </select>
+        
+                            <select name="city" id="lang">
+                                <option value="None">City</option>
+                                {% for city in cities %}
+                                <option value="{{ city }}" {% if city == city_selected %} selected
+                                    {%endif%}>{{ city }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <select name="goodfor" id="city">
+                                <option value="0">Great for</option>
+                                {% for cause in goodfor %}
+                                <option value="{{ cause.pk }}" {% if cause.pk == goodfor_selected %} selected {%endif%}>{{ cause }}</option>
+                                {% endfor %}
+                            </select>
+                            <input class="btn btn-primary" type="submit" value="Apply filter" style="margin-left: 1cm;" />
+        
+                        </form>
+                    </div>
+        
+                </div>
+                <div class="row justify-content-center">
+                    {% if not events%}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single_reson">
+                            <h1>Opportunities not found ...</h1>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% for event in events %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single_reson">
+                            <div class="thum">
+                                <div class="thum_1">
+                                    <img src="{{ event.image.url }}" alt="logo">
+                                </div>
+                            </div>
+                            <div class="help_content">
+                                <div class="row zoha">
+                                    <h4 class="event-title">{{ event.title }}</h4>
+                                    <h5 class="event-location"><i class="fa fa-location-arrow"></i>
+                                    {{ event.city}}, {{ event.country }}</h5>
+                                    <h5> {{ event.description | truncatechars:80}}</h5>
+                                    <a href="{% url 'event-detail' event.pk %}" class="read_more">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <nav class="blog-pagination justify-content-center d-flex">
+            {% if page_obj.has_other_pages %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"><i
+                            class="ti-angle-left"></i></a></li>
+                {% else %}
+                <li class="page-item"><a disabled class="page-link"><i class="ti-angle-left"></i></a></li>
+                {% endif %}
+                {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><a class="page-link" disabled>{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"><i
+                            class="ti-angle-right"></i></a></li>
+                {% else %}
+                <li class="page-item"><a disabled class="page-link"><i class="ti-angle-right"></i></a></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</section>
+{% endblock %}

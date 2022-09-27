@@ -1,0 +1,46 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="mb-5 p-4 rounded-xl bg-red-200 text-white">
+                            <p>{{ error|escape }}</p>
+                        </div>
+                    {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="form_errors">
+                        {% for key, value in form.errors.items %}
+                            <strong>{{ value }}</strong>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        {% endif %}
+        {% if sent %}
+        <h1>E-mail successfully sent</h1>
+         <p>
+            "{{ petition.title }}" was successfully sent to {{ form.data.to }}.
+        </p>
+        {% else %}
+        <h1 style="color: rgb(241, 160, 8);">{{ petition.title }}</h1><br/>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h3 style="color: rgb(120, 124, 128);">Name</h3><br/>
+            {{ form.name | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Your Email</h3><br/>
+            {{ form.email | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">To (Receiver's email)</h3><br/>
+            {{ form.to | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Comments</h3><br/>
+            {{ form.comments | add_class:"form-control form-control-lg"}}<br/>
+            <input type="submit" name="submit" value="SEND E-MAIL" class="btn btn-primary"/>
+        </form>
+        {% endif %}
+{% endblock %}

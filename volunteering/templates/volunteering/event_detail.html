@@ -1,0 +1,97 @@
+{% extends 'fundraiser/base.html'%}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/event-detail.css' %}">
+{% endblock %}
+{% block content %}
+<section class="blog_area section-padding">
+<div class="container">
+    <section class="col-sm-12">
+    <h1>{{ event.title }}</h1>
+    <div class="region region-content">
+        <section id="block-system-main" class="block block-system clearfix">
+            <br>
+            <div class="row">
+                <div class="col col-md-8">
+                    <div class="esc-standard-block box">
+                        <div class="row vertical-align">
+                            <div class="col col-md-3">
+                                <img class="img-responsive" typeof="foaf:Image"
+                                    src="{{ event.image.url }}"
+                                    alt="" style="height:160px;width:160px;object-fit: cover;"> </div>
+                            <div class="col col-md-9">
+                                <h3>{{ event.title }}</h3>
+                                {% if event.organization %}
+                                <p>{{ event.organization }}</p>
+                                {% else %}
+                                <p>{{ event.author.first_name }} {{ event.author.last_name }}</p>
+                                {% endif %}
+                                <p class="esc-standard-location">{{ event.city }}, {{ event.country }}</p>
+                            </div>
+                        </div>
+                        {% if request.user.id != event.author.id %}
+                            {% if is_applied %}
+                                <div class="clearfix">
+                                    <p class="pull-right no-class"><a disabled
+                                            class="ec-ey-btn btn btn-default btn-lg">Applied</a></p>
+                                </div>
+                            {% elif event.apply %}
+                            <div class="clearfix">
+                            <p class="pull-right no-class"><a href="{{ event.apply }}" target="_blank"
+                                        class="ec-ey-btn btn btn-default btn-lg">Apply</a></p>
+                            </div>
+                            {% else %}
+                            <div class="clearfix">
+                                <p class="pull-right no-class"><a href="{% url 'apply-event' event.pk %}" target="_blank"
+                                            class="ec-ey-btn btn btn-default btn-lg">Apply</a></p>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+                    <div class="box">
+                        <h3 class="esc-placement-heading">Description</h3>
+                            {{ event.description }}
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="box">
+                        <h3 class="esc-placement-heading right-first">Cause areas</h3>
+                        {% for cause in event.cause.all %}
+                        <p> {{ cause.title }}</p>
+                        {% endfor %}
+                        <hr>
+                        <h3 class="esc-placement-heading">When</h3>
+                        <p>{{ event.when }}</p>
+                        <hr>
+                        <h3 class="esc-placement-heading">Where</h3>
+                        <p><i class="fa fa-location-arrow fa-lg"></i> {{ event.city }}
+                            <strong>{{ event.country }}</strong></p>
+                        <hr>
+                        <h3 class="esc-placement-heading">Date posted</h3>
+                        <p>{{ event.created|date }}</p>
+                        <hr>
+                        <h3 class="esc-placement-heading">Skills</h3>
+                        {% for skill in event.skills.all %}
+                        <p> <i class="fa fa-check"></i> {{ skill }}</p>
+                        {% endfor %}
+                        <hr>
+                        <h3 class="esc-placement-heading">Good for</h3>
+                        {% for profile in event.goodfor.all %}
+                        <p><i class="fa fa-plus"></i> {{ profile }}</p>
+                        {% endfor %}
+                        <hr>
+                        <h3 class="esc-placement-heading">Requirements</h3>
+                        <p>{{ event.requirements }}</p>
+                        <hr>
+                    </div>
+                </div>
+                
+            </div>
+
+        </section>
+    </div>
+</section>
+</div>
+</section>
+{% endblock %}

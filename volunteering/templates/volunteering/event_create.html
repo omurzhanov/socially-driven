@@ -1,0 +1,80 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="mb-5 p-4 rounded-xl bg-red-200 text-white">
+                         <p>{{ error|escape }}</p>
+                        </div>
+                    {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="form_errors">
+                        {% for key, value in form.errors.items %}
+                            <strong>{{ value }}</strong>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Your organization</h1>
+            {{ form.organization | add_class:"form-control form-control-lg"}}<br/>
+            <h1>Write your volunteering opportunity title</h1>
+            <h4 style="color: rgb(120, 124, 128);">Tell people what you want to change.</h4><br/>
+            {{ form.title | add_class:"form-control form-control-lg"}}<br/>
+            <div class="container" style="background-color: rgb(197, 191, 191); border-radius: 0.1cm; margin-top: 00.2cm;">
+            <pre><b>Tips
+
+                Keep it short and to the point</b>
+
+                <b>Focus on the solution</b>
+
+                <b>Communicate urgency</b>
+            </pre>
+            </div>
+            <h3 style="color: rgb(120, 124, 128);">Select a causes</h3><br/>
+            {{ form.cause | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h1>Opportunity description</h1>
+            <h4 style="color: rgb(120, 124, 128);">Explain the problem and why you care about it. Showing how it will impact you, your family, or your community will make people more likely to support it.</h4><br/>
+            {{ form.description | add_class:"form-control form-control-lg"}}<br/>
+            
+            <div class="container" style="background-color: rgb(197, 191, 191); border-radius: 0.1cm; margin-top: 00.2cm;">
+                <pre><b>Tips</b>
+
+                    Describe who is involved and how they are affected by the problem.
+                
+                    Explain what needs to change and who has the power to do something.
+                
+                    Make it clear what happens if you win or lose.
+                
+                    Don’t bully, use hate speech, threaten violence, or make things up.
+                </pre>
+            </div><br/>
+            <h3 style="color: rgb(120, 124, 128);">Requirements</h3><br/>
+            {{ form.requirements | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">When</h3><br/>
+            {{ form.when | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Good for</h3><br/>
+            {{ form.goodfor | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">City</h3><br/>
+            {{ form.city | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Country</h3><br/>
+            {{ form.country | add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Upload a photo</h3><br/>
+            {{ form.image |add_class:"form-control form-control-lg"}}<br/>
+            <h3 style="color: rgb(120, 124, 128);">Opportunity applying link(leave it blank if you want to use this platform)</h3><br/>
+            {{ form.apply | add_class:"form-control form-control-lg"}}<br/>
+            <input type="submit" name="SUBMIT" value="SUBMIT" class="btn btn-primary"/>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        {% if request.user.id == event.author.id %}
+        <div style="margin-bottom: 1cm;">
+            <a class="btn btn-dark" href="{{request.META.HTTP_REFERER}}">Go back</a><br/>
+        </div>
+        <h3>Delete: {{ event.title }}</h3>
+        <form method="post">
+            {% csrf_token %}
+            <strong>Are you sure?</strong>
+            <input class="btn btn-danger" type="submit" name="submit" value="Delete" />
+        </form>
+    </div>
+    {% else %}
+        <h1>You are not allowed here ( and you knew it ...)</h1>
+    {% endif %}
+    </div>
+</section>
+{% endblock %}

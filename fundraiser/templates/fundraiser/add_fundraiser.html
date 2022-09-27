@@ -1,0 +1,72 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="mb-5 p-4 rounded-xl bg-red-200 text-white">
+                            <p>{{ error|escape }}</p>
+                        </div>
+                    {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="form_errors">
+                        {% for key, value in form.errors.items %}
+                            <strong>{{ value }}</strong>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Let's begin your fundraising journey</h1>
+            <p>We're here to guide you every step of the way.</p><br/>
+            <h4 style="color: rgb(120, 124, 128);">Where are you located? (country)</h4>
+            {{ form.country | add_class:"form-control form-control-lg"}}<br/>
+            <h4 style="color: rgb(120, 124, 128);">Your city</h4>
+            {{ form.city | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h4 style="color: rgb(120, 124, 128);">What best describes why you're fundraising?</h4>
+            {{ form.category | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h3>How much would you like to raise?</h3>
+            <p>You can always change your goal as you go.</p><br/>
+            <h4 style="color: rgb(120, 124, 128);">Your starting goal (USD)</h4>
+            {{ form.goal | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h3>Tell donors why you're fundraising</h3>
+            <div class="container" style="background-color: rgb(197, 191, 191); border-radius: 0.1cm; margin-top: 00.2cm;">
+                <pre><b>Some ideas to help you start writing:</b>
+                    * Introduce yourself and what you're raising funds for
+                    * Describe why it's important to you
+                    * Explain how the funds will be used
+                </pre>
+            </div><br/>
+            <h3>Give your fundraiser a title</h3>
+            {{ form.title | add_class:"form-control form-control-lg"}}<br/>
+
+            <h3>Tell your story</h3>
+            <p>Introduce yourself and what you’re raising funds for, describe its importance to you, and how funds will be used.</p>
+            {{ form.description | add_class:"form-control form-control-lg"}}<br/>
+
+            <h4>Deadline (optional)</h4>
+            {{ form.deadline | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h3>Write your PayPal Business account</h3>
+            <label>You won't be able to change it later. Make sure it's correct</label>
+            {{ form.paypal_account | add_class:"form-control form-control-lg"}}<br/>
+            
+            <h4 style="color: rgb(120, 124, 128);">Upload images</h4>
+            <p>Using a bright and clear photo helps people connect to your fundraiser right away.</p>
+            {{ imageform.image |add_class:"form-control form-control-lg"}}<br/>
+            <input type="submit" name="submit" value="SUBMIT" class="btn btn-primary"/>
+        </form>
+    </div>
+</section>
+{% endblock %}

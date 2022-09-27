@@ -1,0 +1,267 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+{% endblock %}
+{% block content %}
+ <!--================Blog Area =================-->
+ <section class="blog_area single-post-area section-padding" style="padding-top: 30px; padding-bottom: 30px;">
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top: 0.5cm;">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb-55">
+                    <h3><span>{{fundraiser.title }}</span></h3>
+                </div>
+            </div>
+        </div>
+       <div class="row">
+          <div class="col-lg-8 posts-list">
+             <div class="single-post">
+                <div class="feature-img">
+                   <img class="img-fluid" src="{{ fundraiser.get_image }}" alt="">
+                </div>
+                <div class="blog_details">
+                   <ul class="blog-info-l">
+                      <li><h5><i class="fa fa-user"></i> {{ fundraiser.author.first_name }} {{ fundraiser.author.last_name }} is organizing this fundraiser</h5></li><br/>
+                      <li><h5><i class="fa fa-clock-o"></i> {{ fundraiser.published }}</h5></li>
+                   </ul>
+                       {{ fundraiser.description | linebreaks }}
+                </div>
+                <div id="content-wrapper">
+                    <div class="column">
+                        <img id="featured" src="{{ fundraiser.get_image }}">
+            
+                        <div id="slide-wrapper">
+                            <div id="slider">
+                                {% for image in fundraiser.images.all %}
+            
+                            
+                                <img class="thumbnail" src="{{ image }}" alt="img" style="object-fit: contain;">
+            
+                                {% endfor %}
+                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <script type="text/javascript">
+                        let thumbnails = document.getElementsByClassName('thumbnail')
+                        let activeImages = document.getElementsByClassName('active')
+                        for (var i=0; i < thumbnails.length; i++){
+                            thumbnails[i].addEventListener('click', function(){
+            
+                                if (activeImages.length > 0){
+                                    activeImages[0].classList.remove('active')
+                                }
+                            
+                                this.classList.add('active')
+                                document.getElementById('featured').src = this.src
+                            })
+            
+            
+                        }
+            
+                        const buttonRight = document.getElementById('slideRight');
+                        const buttonLeft = document.getElementById('slideLeft');
+            
+            
+                        buttonRight.addEventListener('click', function(){
+                            document.getElementById('slider').scrollLeft += 180;
+                        })
+            
+            
+            
+                        buttonLeft.addEventListener('click', function(){
+                          document.getElementById('slider').scrollLeft -= 180;
+                        })
+            
+                </script>
+             </div>
+             <div class="blog-author">
+                <h3>Organizer</h3><br/>
+                
+                <div class="media align-items-center">
+                   <img src="{{ fundraiser.author.avatar.url}}" alt="" style="object-fit: contain;">
+                   <div class="media-body">
+                      <a disabled>
+                        <h4>{{ fundraiser.author.first_name }} {{ fundraiser.author.last_name }}</h4>
+                        <h6>Organizer</h6>
+                        <h6>{{ fundraiser.city }}, {{ fundraiser.country }}</h6>
+                      </a>
+                      
+                    </div>
+                    
+                   <button class="btn btn-success" onclick="myFunction()">Contact</button>
+                   <br/>
+
+                   <script>
+                       function myFunction() {
+                        var x = document.getElementById("show-hide-custom");
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                       }
+                   </script>
+                </div>
+                <div id="show-hide-custom" style="display: None; margin-top: 0.5cm;">
+                    <label style="font-size: large;">Email</label>
+                    <h3>{{ fundraiser.author.email }}</h3>
+                </div>
+             </div>
+             
+             <div class="comments-area">
+                <h3>Words of Support</h3>
+                <label style="font-size: large;">Please donate to share words of support.</label><br/>
+                {% if not comments %}
+                    <h1>....</h1>
+                {% endif %}
+                {% for comment in comments %}
+                <div class="comment-list" style="margin-top: 15px;">
+                   <div class="single-comment justify-content-between d-flex">
+                      <div class="user justify-content-between d-flex">
+                         <div class="thumb">
+                            <img src="{{ comment.author.avatar.url }}" alt="image" style="object-fit: cover;">
+                         </div>
+                         <div class="desc">
+                            <p class="comment">
+                               "{{ comment.body }}"
+                            </p>
+                            <div class="d-flex justify-content-between">
+                               <div class="d-flex align-items-center">
+                                  <h5>
+                                     <a>{{ comment.author.first_name}} {{ comment.author.last_name}}</a>
+                                  </h5>
+                                  <p class="date"> {{ comment.created }}</p>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                {% endfor %}
+             </div>
+             {% if is_donator %}
+             <div class="comment-form">
+                <h4>Leave a Word of Support</h4>
+                <form class="form-contact comment_form" method="post" id="commentForm">
+                    {% csrf_token %}
+                   <div class="row">
+                      <div class="col-12">
+                         <div class="form-group">
+                            <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="6"
+                               placeholder="Write Comment" required></textarea>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="form-group">
+                      <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
+                   </div>
+                </form>
+             </div>
+             {% endif %}
+          </div>
+          <div class="col-lg-4">
+             <div class="blog_right_sidebar">
+                <aside style="position: sticky;
+                    top: 1rem;background: #fff;border-radius: .75rem;
+                    box-shadow: 0 .3125rem 1rem -.1875rem rgba(0,0,0,.2);
+                    padding-bottom: 1.5rem;
+                    padding-top: 1.5rem;box-sizing: inherit;color: #333;
+                    font-family: CircularXXWeb,Trebuchet,Helvetica,Arial,sans-serif;
+                    font-size: 1rem;
+                    line-height: 1.5;">
+                    <div style="padding-left: 1.5rem;padding-right: 1.5rem;">
+                        <div style="margin-bottom: .75rem;display: grid;">
+                            <progress
+                                 max="100" value="{{ fundraiser.get_percentage }}" style="grid-row: 2/3;
+                                margin-bottom: 0;appearance: none;
+                                background-color: #e6f6ef;
+                                border: none;
+                                border-radius: .125rem;
+                                color: #02a95c;
+                                display: block;
+                                height: .45rem;
+                                width: 100%;">
+                            </progress>
+                            <h2 style="line-height: .8;margin-top: .25rem; display: block;
+                            font-weight: 900; font-size:larger;">${{ fundraiser.money_raised|intcomma }}
+                                <span style="color: #767676 !important;font-weight: 400 !important;font-size: .875rem !important;line-height: 1.21 !important;">
+                                USD raised of {{ fundraiser.goal|intcomma }} goal
+                                </span>
+                        </div>
+                        <div class="mb2x show-for-large text-stat text-stat-title" 
+                            style="color: #767676 !important;font-weight: 400 !important;font-size: .875rem !important;
+                                   line-height: 1.21 !important;margin-bottom: 1rem !important;">
+                            {{ fundraiser.donations.count }} donations
+                        </div>
+                        <div class="p-campaign-share-donate-buttons">
+                            <a href="{% url 'fund-share' fundraiser.pk %}" style="border: none;display: flex;
+                                width: 100%;background: linear-gradient(180deg,#ffde9e 50%,#fcb957);box-shadow: 0 6px 14px rgba(0,0,0,.1);color: #333;
+                                text-decoration: none;align-items: center;border-radius: .25rem;
+                                cursor: pointer;font-size: 1rem;
+                                font-weight: 900;justify-content: center;
+                                letter-spacing: .02em;line-height: 1.5;min-height: 3rem;
+                                position: relative;
+                                text-align: center;margin-bottom: .5rem !important;margin-left: auto !important;
+                                margin-right: auto !important;">
+                                <span style="flex-grow: 1;">Share</span>
+                            </a>
+                            <a href="{% url 'fund-donate' fundraiser.pk %}" style="border: none;display: flex; width: 100%;background: linear-gradient(180deg,#fdb933 35.42%,#f58131 139.58%);box-shadow: 0 6px 14px rgba(0,0,0,.1);color: #333;
+                                    text-decoration: none;align-items: center;appearance: none;border-radius: .25rem;
+                                    cursor: pointer;font-size: 1rem;
+                                    font-weight: 900;justify-content: center;
+                                    letter-spacing: .02em;
+                                    line-height: 1.5;
+                                    min-height: 3rem;
+                                    position: relative;
+                                    text-align: center;margin-bottom: 1rem !important;margin-left: auto !important;
+                                    margin-right: auto !important;">
+                                    <span style="flex-grow: 1;cursor: pointer;
+                                    font-size: 1rem;
+                                    font-weight: 900;
+                                    letter-spacing: .02em;
+                                    line-height: 1.5;
+                                    text-align: center;">Donate now</span>
+                            </a>
+                        </div>
+                        <div>
+                           <h2>Donators</h2>
+                           {% for donation in donations %}
+                           <div style="background: transparent;
+                           border-top: 1px solid #eee;
+                           padding: 30px 0;">
+                               <div class="thumb">
+                                   <img src="{{ donation.author.avatar.url }}" alt="image" style="object-fit: cover;width: 40px;
+                                   height: 40px;
+                                   border-radius: 50%;
+                                   margin-right: 30px;">
+                                           <a style="font-size: small;">{{ donation.author.first_name}} {{ donation.author.last_name}}</a>
+                               
+                               </div>
+                               
+                               <div class="desc">
+                                 <h2 style="line-height: .8;margin-top: 1rem; display: block;
+                                 font-weight: 900; font-size:larger;">${{ donation.amount|intcomma }}</h2>
+                                   
+                                   <div class="d-flex justify-content-between">
+                                   <div class="d-flex align-items-center">
+                                       <p class="date" style="font-size: small;"> {{ donation.created }}</p>
+                                   </div>
+                                   </div>
+                               </div>
+                           </div>
+                           {% endfor%}
+                       </div>
+                    </div>
+                </aside>
+             </div>
+          </div>
+       </div>
+    </div>
+ </section>
+{% endblock %}

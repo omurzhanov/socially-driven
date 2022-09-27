@@ -1,0 +1,17 @@
+{% extends 'fundraiser/base.html' %}
+{% block title %} Donate using PayPal {% endblock %}
+
+{% block content %}
+<div class="reson_area section_padding" style="padding-bottom: 0%;">
+    <div class="container">
+        <div>
+            <a href="{% url 'fund-detail' pk %}"><input type="button" class="btn btn-dark" value="Back"></a>
+        </div>
+        <div class="row justify-content-center" style="margin-bottom: 1cm;">
+            <div class="bradcam_text text-center">
+                <h1>Your donation was successful</h1>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

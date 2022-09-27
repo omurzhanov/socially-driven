@@ -1,0 +1,22 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        {% if request.user.id == event.author.id %}
+        <form method="post" enctype="multipart/form-data">
+            <h1>{{ event.title }}</h1>
+            {% csrf_token %}
+            <h3 style="color: rgb(120, 124, 128);">Add a skill required</h3><br/>
+            <input type="text" class="form-control form-control-lg" name="skill" required>
+            <br/>
+            <input type="submit" name="SUBMIT" value="Save and add another" class="btn btn-primary"/>
+            <input type="submit" name="SUBMIT" value="Save" class="btn btn-success"/>
+        </form>
+        {% else %}
+        <h1>You are not allowed here ( and you knew it ...)</h1>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

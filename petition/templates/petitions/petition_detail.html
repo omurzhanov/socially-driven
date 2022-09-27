@@ -1,0 +1,156 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+  <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+      <div class="container">
+          <div class="row">
+              <div class="col-xl-12">
+                  <div class="bradcam_text text-center">
+                      <h3>{{ petition.title }}</h3>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+   <section class="blog_area single-post-area section-padding">
+      <div class="container">
+         <div class="input-group-append" style="margin-bottom: 1cm;">
+            <a class="btn" href="{% url 'petition-list' %}?page={{ page }}">Go back</a><br/>
+         </div>
+         <div class="row">
+            <div class="col-lg-8 posts-list">
+               <div class="single-post">
+                  <div class="feature-img">
+                     <img class="img-fluid" src="{{ petition.get_image }}" alt="">
+                  </div>
+                  <div class="blog_details">
+                     <h2>{{ petition.title }}</h2>
+                     <ul class="blog-info-link mt-3 mb-4">
+                        <li><a><i class="fa fa-list"></i>{{ petition.category }}</a></li>
+                        <li><a><i class="fa fa-comments"></i> {{ comment_size }} Comments</a></li>
+                     </ul>
+                     <p>
+                        {{ petition.description | linebreaks}}
+                     </p>
+                  </div>
+                  {% for image in images %}
+                  <div class="feature-img">
+                    <img class="img-fluid" src="{{ image }}" alt="">
+                  </div>
+                  {% endfor %}
+               </div>
+               <div class="blog-author">
+                  <div class="media align-items-center">
+                     <img src="{{ petition.author.avatar.url }}" alt="">
+                     <div class="media-body">
+                        <a href="">
+                           <h4>{{ petition.author.first_name }}</h4>
+                        </a>
+
+                        <p>{{ petition.author.bio }}</p>
+                        
+                     </div>
+                     {% if request.user == petition.author %}
+                           <a href="{% url 'delete-petition' petition.pk %}"><button class="btn btn-danger">Delete Petition</button></a>
+                        {% endif %}
+                  </div>
+               </div>
+               <div class="comments-area">
+                  <h3 style="margin-bottom: 1cm;">Reason of Helping</h3>
+                  {% if not comments %}
+                  <div class="comment-list">
+                     <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                           <div class="desc">
+                              <p class="comment" style="margin-left: 1cm;">
+                                 No comments yet ...
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% endif %}
+                  {% for comment in comments %}
+                  <div class="comment-list">
+                     <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                           <div class="thumb">
+                              <img src="{{ comment.author.avatar.url }}" alt="">
+                           </div>
+                           <div class="desc">
+                              <p class="comment">
+                                 {{ comment.body | linebreaks }}
+                              </p>
+                              <div class="d-flex justify-content-between">
+                                 <div class="d-flex align-items-center">
+                                    <h5>
+                                       <a href="">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
+                                    </h5>
+                                    <p class="date">{{ comment.created }} </p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+            </div>
+            <div class="col-lg-4">
+               <div class="blog_right_sidebar">
+                  <aside class="single_sidebar_widget search_widget">
+                    <p><b style="color: black;">{{ petition.signers.count }} have signed.</b> Let's get to {{ petition.goal}}!</p>
+                    <div class="progress" style="margin-bottom: 0.5cm;">
+                        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: {{ petition.get_percentage }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% if is_signed %}
+                    <form>
+                      <div class="form-group">
+                          <h4><i class="fa fa-user"></i> {{ petition.author.first_name }} {{ petition.author.last_name }}</h4>
+                          <div class="mb-3">
+                              <p for="exampleFormControlTextarea1" class="form-label"><b style="color: black;">I’m signing because… (optional)</b></p>
+                              <textarea placeholder="I’m signing because… (optional)" class="form-control" id="exampleFormControlTextarea1" rows="4" style="height: 100%;" name="comment" disabled></textarea>
+                            
+                          </div>
+                          <div style="display: flex;">
+                            <input type="checkbox" value="True" style="margin-right: 0.2cm;" name="commentHide" disabled>
+                            <label>Do not display my name and comment on this petition</label>
+                        </div>
+                        </div>
+                      <button type="submit" class="btn btn-danger" style="width: 100%; display: block;" value="submit" disabled>
+                          <i class="fa fa-lock"></i> You already signed.
+                      </button>
+                    </form>
+                    {% else %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <h4><i class="fa fa-user"></i> {{ petition.author.first_name }} {{ petition.author.last_name }}</h4>
+                            <div class="mb-3">
+                                <p for="exampleFormControlTextarea1" class="form-label"><b style="color: black;">I’m signing because… (optional)</b></p>
+                                <textarea placeholder="I’m signing because… (optional)" class="form-control" id="exampleFormControlTextarea1" rows="4" style="height: 100%;" name="comment"></textarea>
+                              
+                            </div>
+                            <div style="display: flex;">
+                              <input type="checkbox" value="True" style="margin-right: 0.2cm;" name="commentHide">
+                              <label>Do not display my name and comment on this petition</label>
+                          </div>
+                          </div>
+                        <button type="submit" class="btn btn-danger" style="width: 100%; display: block;" value="submit">
+                            <i class="fa fa-lock"></i> Sign this petition
+                        </button>
+                      </form>
+                      {% endif %}
+                      <div class="row justify-content-center" style="margin-top: 0.5cm;">
+                        <a href="{% url 'share-petition' petition.pk %}" style="margin-right: 1cm;">Share this petition</a>
+                      </div>
+                  </aside>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+{% endblock %}

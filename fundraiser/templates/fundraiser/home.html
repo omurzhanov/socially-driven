@@ -1,0 +1,328 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% block title %} Welcome | {% endblock %}
+{% block content %}
+    
+    <!-- slider_area_start -->
+    <div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1 overlay2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="slider_text ">
+                            <span>Get Started Today.</span>
+                            <h3> Help the people
+                                When They Need</h3>
+                            <p>There’s a part of every one of us that dreams of a better world. 
+                                That spark of inspiration to help a person, fix a neighborhood, 
+                                or even change a nation. At AK JUROK, we believe your inspiration should be shared with everyone. 
+                                Because that is how change happens.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider_area_end -->
+
+    <!-- reson_area_start  -->
+    <div class="reson_area section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb-55">
+                        <h3><span>Ak Jurok Difference</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{% static 'img/help/1.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Speed</h4>
+                            <p>We’ve helped families and communities get back on their feet quickly.
+                                In just the first 30 days following Hurricane Harvey, 
+                                Ak Jurok delivered over $27 million directly to people affected by the storm.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{% static 'img/help/2.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Trust</h4>
+                            <p>Our Trust & Safety team works around the clock to ensure your safety and protect against fraud. We also provide the industry’s first and only donor protection guarantee.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_reson">
+                        <div class="thum">
+                            <div class="thum_1">
+                                <img src="{% static 'img/help/3.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="help_content">
+                            <h4>Reach</h4>
+                            <p>Ak Jurok helps you easily share your story far and wide over email, text, and social media to rally support for your cause. </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- reson_area_end  -->
+
+    
+    <!-- popular_causes_area_start  -->
+    <div class="popular_causes_area section_padding" style="padding-top: 0%; padding-bottom: 20px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb-55">
+                        <h3><span>Popular Causes</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="causes_active owl-carousel">
+                        {% for fundraiser in fundraisers %}
+                        <div style="width: 316px;
+                        margin-right: 30px;min-height: 1px;float: left;">
+                        <div class="single_cause" style="margin-bottom: 30px;box-sizing: border-box;">
+                            <div class="thumb" style="border-radius: 7px 7px 0 0;
+                            overflow: hidden;">
+                                <img src="{{ fundraiser.get_image }}" alt="image"
+                                    style="width: 100%;transform: scale(1);transition: 0.3s;display: block; height: 220px; object-fit: contain;">
+                            </div>
+                            <div class="causes_content" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+                            padding: 30px 30px 34px 30px;
+                            position: relative;border-radius: 0 0px 7px 7px; height: 320px;">
+                                <div class="custom_progress_bar" style="position: absolute;
+                                left: 0;
+                                right: 0;
+                                top: 0;">
+                                    <div class="progress" style="height: 4px;
+                                    overflow: visible;
+                                    font-size: 12px;
+                                    background-color: #FF4F42;
+                                    border-radius: 0;">
+                                        <div class="progress-bar" role="progressbar" style="width: {{fundraiser.get_percentage }}%; background-color: #3CC78F;
+                                        position: relative; overflow: hidden;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                            {% if fundraiser.get_percentage > 5 %}
+                                            <span class="progres_count" style="position: absolute;
+                                            right: 0;width: 32px;height: 32px;border-radius: 50%;font-size: 12px;background: #3CC78F;line-height: 32px;">
+                                                {{fundraiser.get_percentage }}%
+                                            </span>
+                                            {% else %}
+                                            <span class="progres_count" style="position: absolute;
+                                            right: 1;width: 32px;height: 32px;border-radius: 50%;font-size: 12px;background: #3CC78F;line-height: 32px;">
+                                                {{fundraiser.get_percentage }}%
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="balance d-flex justify-content-between align-items-center" style="padding-bottom: 20px;
+                                margin-bottom: 25px;
+                                border-bottom: 1px solid #F2F2F2;">
+                                    <span style="font-size: 14px;
+                                    color: #222222;
+                                    font-weight: 600;
+                                    font-family: sans-serif;">Raised: ${{ fundraiser.money_raised }} </span>
+                                    <span style="font-size: 14px;
+                                    color: #222222;
+                                    font-weight: 600;
+                                    font-family: sans-serif;">Goal: ${{ fundraiser.goal }} </span>
+                                </div>
+                                <h4 style="font-size: 20px;
+                                margin-bottom: 20px;">{{ fundraiser.title | truncatechars:40}}</h4>
+                                <p>{{ fundraiser.description | truncatechars:70}}</p><br/>
+                                <a class="read_more" href="{% url 'fund-detail' fundraiser.pk %}">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popular_causes_area_end  -->
+
+    <!-- counter_area_start  -->
+    <div class="counter_area">
+        <div class="container">
+            <div class="counter_bg overlay">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-calendar"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">120</h3>
+                                <p>Finished Petition</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-heart-beat"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">55</h3>
+                                <p>Finished Fundraiser</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-in-love"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">569</h3>
+                                <p>Given Items</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single_counter d-flex align-items-center justify-content-center">
+                            <div class="icon">
+                                <i class="flaticon-hug"></i>
+                            </div>
+                            <div class="events">
+                                <h3 class="counter">122</h3>
+                                <p>Finished Event</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- counter_area_end  -->    
+
+    <!-- news__area_start  -->
+    <div class="news__area section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb-55">
+                        <h3><span>Popular Petitions</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="news_active owl-carousel">
+                        {% for petition in petitions %}
+                        <div class="single__blog d-flex align-items-center">
+                            <div class="thum">
+                                <img src="{{ petition.get_image }}" alt="">
+                            </div>
+                            <div class="newsinfo">
+                                <span>{{ petition.created | date}}</span>
+                                <a href="single-blog.html">
+                                    <h3>{{ petition.title | truncatechars:"25"}}</h3>
+                                </a>
+                                <p>{{ petition.description | truncatechars:"60"}}</p>
+                                <a class="read_more" href="{% url 'petition-detail' petition.pk %}">Read More</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- news__area_end  -->
+
+    <!-- our_volunteer_area_start  -->
+    <div class="our_volunteer_area section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb-55">
+                        <h3><span>Our Team</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_volenteer">
+                        <div class="volenteer_thumb">
+                            <img src="{% static 'img/omke.jpg' %}" alt="" height="188" width="auto" style="object-fit:cover;">
+                        </div>
+                        <div class="voolenteer_info d-flex align-items-end">
+                            <div class="social_links">
+                                <ul>
+                                    <li>
+                                        <a> <i class="fa fa-facebook"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-pinterest"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-linkedin"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-twitter"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="info_inner">
+                                <h4>Zalkar Omurzhanov</h4>
+                                <p>Python Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_volenteer">
+                        <div class="volenteer_thumb">
+                            <img src="{% static 'img/aika.jpg' %}" alt="">
+                        </div>
+                        <div class="voolenteer_info d-flex align-items-end">
+                            <div class="social_links">
+                                <ul>
+                                    <li>
+                                        <a> <i class="fa fa-facebook"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-pinterest"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-linkedin"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a> <i class="fa fa-twitter"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="info_inner">
+                                <h4>Aika Kubanychbek</h4>
+                                <p>Data Scientist</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- our_volunteer_area_end  -->
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+{% endblock %}
+{% block content %}
+<div class="whole-wrap">
+    <div class="container box_1170">
+        <div class="section-top-border">
+            <h3 class="mb-30">My Donations</h3>
+            <div class="progress-table-wrap">
+                <div class="progress-table">
+                    <div class="table-head">
+                        <div class="serial">#</div>
+                        <div class="country">Fundraiser</div>
+                        <div class="visit">Amount</div>
+                        <div class="visit">City</div>
+                        <div class="percentage">Date</div>
+                    </div>
+                    {% for donation in donations %}
+                    <div class="table-row">
+                        <div class="serial">{{ forloop.counter }}</div>
+                        <div class="country"><a href="{% url 'fund-detail' donation.fundraiser.pk %}">{{ donation.fundraiser|truncatechars:"40"}}</a></div>
+                        <div class="visit">${{ donation.amount }}</div>
+                        <div class="visit">
+                            <h4>{{ donation.fundraiser.city }}</h4>
+                        </div>
+                        <div class="percentage">{{ donation.created }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

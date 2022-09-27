@@ -1,0 +1,62 @@
+{% extends 'fundraiser/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/post-list.css' %}">
+{% endblock %}
+{% block content %}
+<section id="product1">
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top: 3cm;">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb-55">
+                    <h3><span>Free Stuff</span></h3>
+                </div>
+            </div>
+        </div>
+        {% if not posts%}
+        <h1>No results found ...</h1>
+        {% endif %}
+        <div class="pro-container">
+            {% for post in posts%}
+            <a href="{% url 'my-post-detail' post.pk %}">
+                <div class="pro">
+                    <img src="{{ post.get_image }}" alt="">
+                    <div class="des">
+                        <span>{{ post.category }}</span>
+                        <h4>{{ post.title }}</h4>
+                        <h5>{{ post.description | truncatechars:120}}</h5>
+                        <span>{{ post.published }}</span>
+                    </div>
+                    <a href="" disabled><i class="fa fa-location-arrow cart"></i> {{ post.city }}</a>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+        <nav class="blog-pagination justify-content-center d-flex">
+            {% if page_obj.has_other_pages %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"><i class="ti-angle-left"></i></a></li>
+                    {% else %}
+                    <li class="page-item"><a disabled class="page-link"><i class="ti-angle-left"></i></a></li>
+                    {% endif %}
+                    {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><a class="page-link" disabled>{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"><i class="ti-angle-right"></i></a></li>
+                    {% else %}
+                    <li class="page-item"><a disabled class="page-link"><i class="ti-angle-right"></i></a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+            </nav>
+    </div>
+</section>
+{% endblock %}
